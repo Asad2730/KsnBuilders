@@ -1,6 +1,14 @@
 const express = require('express');
-const app = express();
+const session = require('express-session')
 const db = require('./model/sql');
+
+const app = express();
+
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+}));
 
 app.use(express.json())
 
@@ -14,15 +22,18 @@ app.post('/signup', db.signup);
 app.get('/getCategory', db.getCategory);
 app.post('/addCategory', db.addCategory);
 
-app.get('/getGarlic/:uid', db.getGarlic);
+app.get('/getGarlic/', db.getGarlic);
 app.post('/addGarlic', db.addGalicSeed);
 
-app.get('/getInspector/:uid', db.getInspector);
+app.get('/getInspector/', db.getInspector);
 app.post('/addInspector', db.addInspector);
 
 
-app.get('/getRecord/:uid/:cid', db.getRecord);
+app.get('/getRecord/:cid', db.getRecord);
 app.post('/addRecord', db.addRecord);
+
+
+app.get('/logout', db.logout);
 
 
 

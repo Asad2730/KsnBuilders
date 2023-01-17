@@ -25,6 +25,7 @@ module.exports.login = (req, res) => {
     con.query(sql, [req.params.username, req.params.password], (error, results, fields) => {
         if (error) throw error;
         if (results.length > 0) {
+            req.session.uid = results[0]['id'];
             res.json(results);
             res.end();
         } else {
@@ -34,6 +35,10 @@ module.exports.login = (req, res) => {
     })
 }
 
+module.exports.logout = (req, res) => {
+    req.session.destroy();
+    res.end();
+}
 
 
 module.exports.addCategory = (req, res) => {
@@ -73,7 +78,7 @@ module.exports.getCategory = (req, res) => {
 module.exports.addGalicSeed = (req, res) => {
 
     let obj = {
-        user_id: parseInt(req.body.user_id),
+        user_id: parseInt(req.session.uid),
         date: req.body.date,
         amount_received: parseFloat(req.body.amount_received),
         total: parseFloat(req.body.total),
@@ -95,7 +100,7 @@ module.exports.addGalicSeed = (req, res) => {
 
 
 module.exports.getGarlic = (req, res) => {
-    let uid = req.params.uid;
+    let uid = req.session.uid;
     let sql = 'select * from garlicseed where user_id = ?';
     con.query(sql, [uid], (error, results, fields) => {
         if (error) throw error;
@@ -115,7 +120,7 @@ module.exports.getGarlic = (req, res) => {
 module.exports.addInspector = (req, res) => {
 
     let obj = {
-        user_id: parseInt(req.body.user_id),
+        user_id: parseInt(req.session.uid),
         date: req.body.date,
         amount: parseFloat(req.body.amount),
         paid: parseFloat(req.body.paid),
@@ -137,7 +142,7 @@ module.exports.addInspector = (req, res) => {
 
 
 module.exports.getInspector = (req, res) => {
-    let uid = req.params.uid;
+    let uid = req.session.uid;
     let sql = 'select * from inspector where user_id = ?';
     con.query(sql, [uid], (error, results, fields) => {
         if (error) throw error;
@@ -156,7 +161,7 @@ module.exports.getInspector = (req, res) => {
 module.exports.addRecord = (req, res) => {
 
     let obj = {
-        user_id: parseInt(req.body.user_id),
+        user_id: parseInt(req.session.uid),
         date: req.body.date,
         amount: parseFloat(req.body.amount),
         detail: req.body.detail,
@@ -178,7 +183,7 @@ module.exports.addRecord = (req, res) => {
 
 
 module.exports.getRecord = (req, res) => {
-    let uid = req.params.uid;
+    let uid = req.session.uid;
     let cid = req.params.cid;
     let sql = 'select * from records where user_id = ? and cat_id = ?';
     con.query(sql, [uid, cid], (error, results, fields) => {
