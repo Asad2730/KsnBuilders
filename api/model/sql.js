@@ -321,7 +321,7 @@ module.exports.dashboard = (req, res) => {
             res.json(results);
             res.end();
         } else {
-            res.json(list);
+            res.json(results);
         }
         res.end();
     })
