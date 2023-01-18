@@ -1,6 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+import { url } from '../url';
+
 
 export default function Dashboard() {
+
+    const [obj, setObj] = useState([]);
+    useEffect(() => {
+        axios.get(url + 'dashboard')
+            .then(res => {
+                setObj(res.data)
+            }).catch(err => console.log(err))
+    }, []);
     return (
         <>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
@@ -15,100 +26,15 @@ export default function Dashboard() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">CAPT. SYED M. ABID QADRI SB.</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
+                        {
+                            obj.map((i) => (
+                                <tr>
+                                    <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">{i.name}</td>
+                                    <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm">{i['sum(r.amountpaid)']}</td>
 
-                        </tr>
-                        <tr className="bg-gray-200">
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">RAJA MASOOD SB.</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr>
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">CH. ZULFIQAR</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr className="bg-gray-200">
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">DRIVER SHABEER</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr>
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">SERVANT FIAZ</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"> </td>
-
-                        </tr>
-                        <tr className="bg-gray-200">
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">SERVANT SADIQUE</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr>
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">GARLIC BEAJ SALE +10-BAG KHAD MINUS FROM CH. ZULFIQAR</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr className="bg-gray-200">
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">MACHINERY SAVE ADDED IN AMOUNT QADRI SB. & CH. ZULFIQAR</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr>
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">SUB TOTAL INVESTMENT AMOUNT</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr className="bg-gray-200">
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">KAMAAD SALE</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr>
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">GARLIC SALE-2023</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr className="bg-gray-200">
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">TOTAL COMMODITY SALE          ٹوٹل اجناس فروخت   </td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr>
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">TOTAL INVESTMENT AMOUNT</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr className="bg-gray-200">
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">ABID QADRI SB. INVESTMENT FROM AUG-2022 TO PRESENT</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr>
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">RAJA MASOOD SB. INVESTMENT FROM AUG-2022 TO PRESENT</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr className="bg-gray-200">
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">CH. ZULFIQAR INVESTMENT FROM AUG-2022 TO PRESENT</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr>
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">UMAR KHAN LOAN</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
-                        <tr className="bg-gray-200">
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">CH. ZULFIQAR SPEND IN 2021</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-                        </tr>
-                        <tr>
-                            <td className="sm:pl-10 pl-2 pr-2 py-5 text-gray-800 text-xs sm:text-sm">QADRI SB. AMOUNT IN CH. ZULFIQAR HAND</td>
-                            <td className="pr-2 py-5 text-gray-800 text-xs sm:text-sm"></td>
-
-                        </tr>
+                                </tr>
+                            ))
+                        }
                     </tbody>
                 </table>
             </div>
