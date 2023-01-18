@@ -25,7 +25,10 @@ export default function AddRecord({ exp, cat, cid }) {
 
             axios.post(url + `addRecord`, obj)
                 .then((res) => {
-                    console.log(res.data)
+                    setDetail('');
+                    setDate('');
+                    setPaid(0);
+                    setAmount('');
                 }).catch(err => console.log(err))
 
         }
