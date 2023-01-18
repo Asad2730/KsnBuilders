@@ -3,7 +3,10 @@ const con = require('./connection')
 
 module.exports.signup = (req, res) => {
 
-    let obj = { firstname: req.body.firstname, lastname: req.body.lastname, username: req.body.username, password: req.body.password };
+    let obj = {
+        firstname: req.body.firstname, lastname: req.body.lastname, username: req.body.username,
+        password: req.body.password, contact: req.body.contact
+    };
     con.query('insert into users set ?', obj, (err, row, field) => {
         if (!err) {
             console.log('1 Rows effected!');
@@ -26,12 +29,65 @@ module.exports.login = (req, res) => {
         if (error) throw error;
         if (results.length > 0) {
             req.session.uid = results[0]['id'];
+            req.session.save();
             res.json(results);
             res.end();
         } else {
             res.send('user not found!');
         }
         res.end();
+    })
+}
+
+
+module.exports.getPartners = (req, res) => {
+    let uid = req.params.uid;
+    let sql = 'select * from users';
+    con.query(sql, [], (er, rs, field) => {
+        if (!er) {
+            res.json(rs);
+            res.end();
+        }
+    })
+}
+
+
+module.exports.getSingleUser = (req, res) => {
+    let id = req.params.uid;
+    let sql = 'select * from users where id = ?';
+    con.query(sql, [id], (error, results, fields) => {
+        if (results.length > 0) {
+            if (error) throw error;
+            res.json(results);
+            res.end();
+        } else {
+            res.send('not found!');
+        }
+        res.end();
+    })
+}
+
+module.exports.updateUser = (req, res) => {
+
+    let sql = 'update  users set firstname = ?, lastname = ?, username=?, password=?, contact =? where id = ?';
+    con.query(sql, [req.body.firstname, req.body.lastname, req.body.username, req.body.password, req.body.contact, req.params.uid],
+        (error, results, fields) => {
+            if (error) throw error;
+            res.json('updated!');
+            res.end();
+
+        })
+}
+
+
+module.exports.deleteUser = (req, res) => {
+    let id = req.params.id;
+    let sql = 'delete from users where id = ?';
+    con.query(sql, [id], (er, rs, field) => {
+        if (!er) {
+            res.json('deleted !');
+            res.end();
+        }
     })
 }
 
@@ -43,7 +99,7 @@ module.exports.logout = (req, res) => {
 
 module.exports.addCategory = (req, res) => {
 
-    let obj = { name: req.body.name };
+    let obj = { name: req.body.name, expense: parseInt(req.body.expense) };
     con.query('insert into category set ?', obj, (err, row, field) => {
         if (!err) {
             console.log('1 Rows effected!');
@@ -75,6 +131,44 @@ module.exports.getCategory = (req, res) => {
 }
 
 
+module.exports.getSingleCategory = (req, res) => {
+    let id = req.params.id;
+    let sql = 'select * from category where id = ?';
+    con.query(sql, [id], (error, results, fields) => {
+        if (results.length > 0) {
+            if (error) throw error;
+            res.json(results);
+            res.end();
+        } else {
+            res.send('not found!');
+        }
+        res.end();
+    })
+}
+
+module.exports.updateCategory = (req, res) => {
+
+    let sql = 'update  category set name = ?,expense = ? where id = ?';
+    con.query(sql, [req.body.name, parseInt(req.body.expense), req.params.id], (error, results, fields) => {
+        if (error) throw error;
+        res.json(results);
+        res.end();
+
+    })
+}
+
+
+module.exports.deleteCategory = (req, res) => {
+    let sql = 'delete from category  where id = ?';
+    con.query(sql, [req.params.id], (error, results, fields) => {
+        if (error) throw error;
+        res.json('Row deleted!');
+        res.end();
+
+    })
+}
+
+
 module.exports.addGalicSeed = (req, res) => {
 
     let obj = {
@@ -100,7 +194,7 @@ module.exports.addGalicSeed = (req, res) => {
 
 
 module.exports.getGarlic = (req, res) => {
-    let uid = req.session.uid;
+    let uid = req.params.uid;
     let sql = 'select * from garlicseed where user_id = ?';
     con.query(sql, [uid], (error, results, fields) => {
         if (error) throw error;
@@ -142,7 +236,7 @@ module.exports.addInspector = (req, res) => {
 
 
 module.exports.getInspector = (req, res) => {
-    let uid = req.session.uid;
+    let uid = req.params.uid;
     let sql = 'select * from inspector where user_id = ?';
     con.query(sql, [uid], (error, results, fields) => {
         if (error) throw error;
@@ -161,11 +255,12 @@ module.exports.getInspector = (req, res) => {
 module.exports.addRecord = (req, res) => {
 
     let obj = {
-        user_id: parseInt(req.session.uid),
+        user_id: parseInt(req.body.uid),
         date: req.body.date,
-        amount: parseFloat(req.body.amount),
+        amountpaid: parseFloat(req.body.amount),
         detail: req.body.detail,
         cat_id: parseInt(req.body.cat_id),
+        amountrecieved: parseFloat(req.body.amountrecieved)
     };
     con.query('insert into records set ?', obj, (err, row, field) => {
         if (!err) {
@@ -183,7 +278,7 @@ module.exports.addRecord = (req, res) => {
 
 
 module.exports.getRecord = (req, res) => {
-    let uid = req.session.uid;
+    let uid = req.params.uid;
     let cid = req.params.cid;
     let sql = 'select * from records where user_id = ? and cat_id = ?';
     con.query(sql, [uid, cid], (error, results, fields) => {
@@ -197,3 +292,7 @@ module.exports.getRecord = (req, res) => {
         res.end();
     })
 }
+
+
+
+
