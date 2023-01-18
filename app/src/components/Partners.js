@@ -4,7 +4,7 @@ import { url } from '../url';
 import './Global_vaiables';
 
 
-export default function Partners({ onClick }) {
+export default function Partners({ onClick, onAddRecord, onExpense }) {
 
     const [people, setPeople] = useState([]);
 
@@ -39,6 +39,17 @@ export default function Partners({ onClick }) {
     const addUser = () => {
         global.update_id = -1;
         onClick();
+    }
+
+    const addExpense = (id) => {
+        localStorage.setItem('pid', id)
+        onAddRecord()
+    }
+
+
+    const seeExpense = (id) => {
+        localStorage.setItem('pid', id)
+        onExpense();
     }
 
     return (
@@ -106,8 +117,16 @@ export default function Partners({ onClick }) {
                                 <td className=" whitespace-nowrap px-3 py-4 text-sm text-gray-500 sm:table-cell">
                                     {person.contact}
                                 </td>
+
+                                <button
+                                    onClick={() => addExpense(person.id)}
+                                    className=" whitespace-nowrap px-3 py-4 text-smsm:table-cell text-themeBlue underline">
+                                    Add Expense
+                                </button>
                                 <a href="# ">
-                                    <td className=" whitespace-nowrap px-3 py-4 text-smsm:table-cell text-themeBlue underline">
+                                    <td
+                                        onClick={() => seeExpense(person.id)}
+                                        className=" whitespace-nowrap px-3 py-4 text-smsm:table-cell text-themeBlue underline">
                                         View Expenses
                                     </td>
                                 </a>

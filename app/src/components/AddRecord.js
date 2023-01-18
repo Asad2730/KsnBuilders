@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import { url } from '../url';
 
-export default function AddRecord({ exp, cat, cid }) {
+export default function AddRecord({ exp, cat, cid, partner }) {
 
     const [detail, setDetail] = useState('');
     const [paid, setPaid] = useState(0);
@@ -10,16 +10,16 @@ export default function AddRecord({ exp, cat, cid }) {
     const [date, setDate] = useState('');
     let id = localStorage.getItem("k");
 
-    const addRecord = () => {
 
+    const addCat = (uid, cat_id) => {
 
         if (detail && date) {
             let obj = {
-                uid: id,
+                uid: uid,
                 date,
                 amount: paid,
                 detail,
-                cat_id: cid,
+                cat_id: cat_id,
                 amountrecieved: amount
             };
 
@@ -31,6 +31,17 @@ export default function AddRecord({ exp, cat, cid }) {
                     setAmount('');
                 }).catch(err => console.log(err))
 
+        }
+
+    }
+
+    const addRecord = () => {
+        if (partner) {
+            let pid = localStorage.getItem("pid");
+            addCat(pid, -1);
+
+        } else {
+            addCat(id, cid);
         }
     }
 
@@ -83,18 +94,20 @@ export default function AddRecord({ exp, cat, cid }) {
                         className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                     />
                 </div>
-                <label className="block font-medium text-gray-700 text-lg my-2">
-                    Category
-                </label>
-                <div className="mt-1">
-                    <input
-                        id="Amount"
-                        name="Amount"
-                        type="text"
-                        value={cat}
-                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                    />
-                </div>
+                {partner ? null : <div>
+                    <label className="block font-medium text-gray-700 text-lg my-2">
+                        Category
+                    </label>
+                    <div className="mt-1">
+                        <input
+                            id="Amount"
+                            name="Amount"
+                            type="text"
+                            value={cat}
+                            className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                </div>}
                 <label className="block font-medium text-gray-700 text-lg my-2">
                     Date
                 </label>

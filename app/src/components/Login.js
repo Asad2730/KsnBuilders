@@ -19,6 +19,7 @@ function Login() {
                     let uid = response.data[0]['id'];
                     global.uid = uid;
                     localStorage.setItem("k", uid);
+                    localStorage.setItem("login", true);
                     navigate("navbar");
                 } else {
                     console.log('Invalid username/password');

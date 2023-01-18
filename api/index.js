@@ -45,6 +45,7 @@ app.post('/addInspector', db.addInspector);
 
 
 app.get('/getRecordForCategory/:uid/:cid', db.getRecord);
+app.get('/getRecordForPartner/:uid/', db.partnerRecord);
 app.post('/addRecord', db.addRecord);
 
 
@@ -55,6 +56,9 @@ app.delete('/deleteUser/:id', db.deleteUser);
 
 app.get('/getSingleUser/:uid', db.getSingleUser);
 app.put('/updateUser/:uid', db.updateUser);
+
+
+app.get('/dashboard', db.dashboard);
 
 
 

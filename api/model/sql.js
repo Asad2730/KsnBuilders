@@ -293,6 +293,52 @@ module.exports.getRecord = (req, res) => {
     })
 }
 
+module.exports.partnerRecord = (req, res) => {
+    let uid = req.params.uid;
+    let sql = 'select * from records where user_id = ?';
+    con.query(sql, [uid], (error, results, fields) => {
+        if (error) throw error;
+
+        if (results.length > 0) {
+            res.json(results);
+            res.end();
+        } else {
+            res.json(results);
+        }
+        res.end();
+    })
+}
+
+
+module.exports.dashboard = (req, res) => {
+
+    let sql = 'select * from category c inner join records r on c.id=r.cat_id ';
+    con.query(sql, [], (error, results, fields) => {
+        if (error) throw error;
+
+        if (results.length > 0) {
+
+            let list = [];
+            for (let i = 0; i < results.length; i++) {
+                let amt = + parseFloat(results[i]['amountpaid']);
+                let obj = { name: results[i]['name'], amount: amt };
+                list.push(obj);
+                // if (i + 1 < results.length)
+                //     if (results[i]['name'] === results[i + 1]['name']) {
+                //         let obj = { name: results[i]['name'], amount: amt };
+                //         list.push(obj);
+                //     }
+
+            }
+
+            res.json(list);
+            res.end();
+        } else {
+            res.json(list);
+        }
+        res.end();
+    })
+}
 
 
 
